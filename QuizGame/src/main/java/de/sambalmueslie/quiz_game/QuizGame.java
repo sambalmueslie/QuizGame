@@ -1,5 +1,6 @@
 package de.sambalmueslie.quiz_game;
 
+import de.sambalmueslie.quiz_game.data.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,10 +21,15 @@ public class QuizGame extends Application {
 
 	@Override
 	public void start(final Stage stage) throws Exception {
-		final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("MainWindow.fxml"));
+		final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
+		final Parent root = fxmlLoader.load();
+		final MainWindowController controller = (MainWindowController) fxmlLoader.getController();
+		final Model model = new Model();
+		controller.setModel(model);
 
 		final Scene scene = new Scene(root, 1024, 768);
 		scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
+		scene.setOnKeyTyped(e -> controller.handleKeyTyped(e));
 
 		stage.setTitle("FXML Welcome");
 		stage.setScene(scene);

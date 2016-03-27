@@ -41,7 +41,7 @@
       </HBox>
       <TilePane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0" styleClass="pane_question">
          <children>
-            <Label fx:id="question" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="880.0" styleClass="lbl_question" text="Label" />
+            <Label fx:id="question" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="880.0" styleClass="lbl_question" text="Label" wrapText="true" />
          </children>
       </TilePane>
       <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="256.0">

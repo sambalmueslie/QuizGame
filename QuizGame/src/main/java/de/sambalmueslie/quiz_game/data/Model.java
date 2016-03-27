@@ -1,22 +1,33 @@
 package de.sambalmueslie.quiz_game.data;
 
-import static de.sambalmueslie.quiz_game.data.QuestionHelper.createQuestion;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Model {
 
-	@Deprecated
-	public Model() {
-		questions.add(createQuestion("Welcher israelitische Stamm hat sich, um einen Schwur zu umgehen, Frauen auf einem Fest in Absprache erbeutet?",
-				"Benjamin", "Manasse", "Ruben", "Josef", 1, 'a'));
-		questions.add(createQuestion("Welche Person war kein Richter in Israel?", "Deborah", "Gideon", "Jael", "Somson", 1, 'c'));
-		questions.add(createQuestion("Welcher König musste sich von seiner Frau für seinen ausgefallenen Lobpreisstil ,Kritik anhören?", "David", "Salomo",
-				"Saul", "Rehabeam", 1, 'a'));
+	public void addIndex(final Index index) {
+		if (index == null) return;
+		indexs.add(index);
+		indexs.sort((o1, o2) -> Integer.compare(o2.getNumber(), o1.getNumber()));
+	}
+
+	public void addQuestion(final Question question) {
+		if (question == null) return;
+		questions.add(question);
+	}
+
+	public Index getIndexByLevel(final int currentQuestionLevel) {
+		if (currentQuestionLevel <= 0)
+			return indexs.get(indexs.size() - 1);
+		else if (currentQuestionLevel >= indexs.size())
+			return indexs.get(0);
+		else
+			return indexs.get(indexs.size() - currentQuestionLevel);
+	}
+
+	public List<Index> getIndexs() {
+		return Collections.unmodifiableList(indexs);
 	}
 
 	public Question getQuestionByLevel(final int level) {
@@ -28,6 +39,9 @@ public class Model {
 		final int index = r.nextInt(result.size() - 1);
 		return result.get(index);
 	}
+
+	/** the {@link Index} {@link List}. */
+	private final List<Index> indexs = new ArrayList<>();
 
 	/** the {@link Question}s. */
 	private final List<Question> questions = new LinkedList<>();

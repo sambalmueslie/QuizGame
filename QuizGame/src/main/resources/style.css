@@ -53,19 +53,34 @@
 }
 
 .list_index {
-	-fx-padding: 3 30 3 30;
+	-fx-padding: 10 30 10 30;
     -fx-text-fill: white;
     
     -fx-font-family: sans-serif;
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
 	-fx-text-alignment: center;
 	
 	-fx-border-color: #00a2d7;
 	-fx-border-style: solid;
 	-fx-border-width: 3px;
+	-fx-background-radius: 20px;
 	
 	-fx-background-color: black;
+}
+
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: null;
+	-fx-border-color: darkred;
+	-fx-border-style: solid;
+	-fx-border-width: 3px;
+}
+.list-cell {  }
+.list-cell:odd { -fx-background-color: null; }
+.list-cell:even { -fx-background-color: null; }
+.list-cell:filled:hover {
+	-fx-background-color: null;
 }
 
 .lbl_clock {

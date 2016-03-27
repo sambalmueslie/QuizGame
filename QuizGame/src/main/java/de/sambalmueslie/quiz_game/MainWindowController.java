@@ -1,12 +1,19 @@
 package de.sambalmueslie.quiz_game;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import de.sambalmueslie.quiz_game.data.Answer;
+import de.sambalmueslie.quiz_game.data.Index;
 import de.sambalmueslie.quiz_game.data.Model;
+import de.sambalmueslie.quiz_game.view.IndexListCell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -14,7 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
-public class MainWindowController {
+public class MainWindowController implements Initializable {
 
 	/**
 	 * Constructor.
@@ -46,6 +53,12 @@ public class MainWindowController {
 		updateQuestionAndAnswers();
 	}
 
+	@Override
+	public void initialize(final URL location, final ResourceBundle resources) {
+
+		index.setCellFactory(listView -> new IndexListCell());
+	}
+
 	void handleKeyTyped(final KeyEvent e) {
 		if (e.getCode() == KeyCode.SPACE || e.getCharacter().equals(" ")) {
 			gameController.handleUserInteraction();
@@ -61,6 +74,10 @@ public class MainWindowController {
 	 */
 	void setModel(final Model model) {
 		gameController.setModel(model);
+
+		final ObservableList<Index> items = index.getItems();
+		items.addAll(model.getIndexs());
+
 	}
 
 	/**
@@ -117,6 +134,8 @@ public class MainWindowController {
 		setAnswer(answerB, gameController.getAnswer(1));
 		setAnswer(answerC, gameController.getAnswer(2));
 		setAnswer(answerD, gameController.getAnswer(3));
+
+		index.getSelectionModel().select(gameController.getCurrentIndex());
 	}
 
 	@FXML
@@ -132,7 +151,7 @@ public class MainWindowController {
 	/** the {@link GameController}. */
 	private final GameController gameController;
 	@FXML
-	private ListView<String> index;
+	private ListView<Index> index;
 	@FXML
 	private Label lifelineAudience;
 	@FXML

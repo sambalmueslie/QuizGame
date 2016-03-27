@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
@@ -11,7 +12,7 @@
 
 <VBox id="pane" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sambalmueslie.quiz_game.MainWindowController">
    <children>
-      <HBox id="clock" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1024.0">
+      <HBox id="clock" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1024.0">
          <children>
             <FlowPane hgap="5.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400" vgap="10.0">
                <children>
@@ -28,23 +29,22 @@
                   <Label fx:id="clock" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="140.0" styleClass="lbl_clock" text="83" />
                </children>
             </TilePane>
-            
-            <HBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0">
-               <children>
-                  <ListView fx:id="index" prefHeight="380.0" prefWidth="256.0" styleClass="list_index" />
-               </children>
+            <BorderPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0">
+               <center>
+                  <ListView fx:id="index" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" styleClass="list_index" BorderPane.alignment="CENTER" />
+               </center>
                <padding>
-                  <Insets bottom="10.0" left="70.0" right="10.0" top="20.0" />
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                </padding>
-            </HBox>
+            </BorderPane>
          </children>
       </HBox>
-      <TilePane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0" styleClass="pane_question">
+      <TilePane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="106.0" styleClass="pane_question">
          <children>
             <Label fx:id="question" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="880.0" styleClass="lbl_question" text="Label" wrapText="true" />
          </children>
       </TilePane>
-      <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="256.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="212.0">
          <children>
             <TilePane alignment="CENTER" hgap="80.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" styleClass="pane_answer" tileAlignment="TOP_CENTER" vgap="20.0">
                <children>

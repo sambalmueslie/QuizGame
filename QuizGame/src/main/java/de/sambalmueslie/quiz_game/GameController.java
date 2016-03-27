@@ -2,10 +2,7 @@ package de.sambalmueslie.quiz_game;
 
 import java.util.List;
 
-import de.sambalmueslie.quiz_game.data.Answer;
-import de.sambalmueslie.quiz_game.data.AnswerState;
-import de.sambalmueslie.quiz_game.data.Model;
-import de.sambalmueslie.quiz_game.data.Question;
+import de.sambalmueslie.quiz_game.data.*;
 
 public class GameController {
 	private static final int DEFAULT_REMAINING_TIME = 60;
@@ -15,6 +12,11 @@ public class GameController {
 		final List<Answer> answers = currentQuestion.getAnswers();
 		if (index >= answers.size()) return null;
 		return answers.get(index);
+	}
+
+	Index getCurrentIndex() {
+		if (currentQuestion == null) return null;
+		return model.getIndexByLevel(currentQuestionLevel);
 	}
 
 	String getQuestionText() {

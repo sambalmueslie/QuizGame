@@ -28,7 +28,7 @@ public class GameController {
 	}
 
 	public void handleAnswer(final int index) {
-		if (state != GameState.QUESTION_ONGOING) return;
+		if (state != GameState.QUESTION_ONGOING && state != GameState.ANSWER_GIVEN) return;
 
 		final List<Answer> answers = currentQuestion.getAnswers();
 
@@ -39,6 +39,8 @@ public class GameController {
 		} else {
 			selectedAnswer = answers.get(index);
 		}
+
+		answers.forEach(a -> a.setState(AnswerState.IDLE));
 		selectedAnswer.setState(AnswerState.SELECTED);
 		currentQuestion.setAnswered(true);
 		state = GameState.ANSWER_GIVEN;
@@ -174,7 +176,6 @@ public class GameController {
 	private int remainingTime;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
-
 	/** the {@link GameState}. */
 	private GameState state = GameState.DETERMINE_NEXT_QUESTION;
 }

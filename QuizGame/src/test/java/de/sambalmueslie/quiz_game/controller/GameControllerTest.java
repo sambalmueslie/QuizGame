@@ -100,6 +100,7 @@ public class GameControllerTest {
 		assertEquals(false, q.isAnswered());
 		for (final Answer a : q.getAnswers()) {
 			assertFalse(a.isVisible());
+			assertEquals(AnswerState.IDLE, a.getState());
 		}
 		for (int i = 0; i < 4; i++) {
 			assertNotNull(controller.getAnswer(i));
@@ -125,6 +126,7 @@ public class GameControllerTest {
 		controller.handleUserInteraction();
 
 		// second round
+		controller.handleGameLoop();
 		// DETERMINE_NEXT_QUESTION
 		assertEquals(GameState.DETERMINE_NEXT_QUESTION, controller.getState());
 		assertNull(controller.getAnswer(0));
@@ -138,9 +140,13 @@ public class GameControllerTest {
 		assertEquals(false, q.isAnswered());
 		for (final Answer a : q.getAnswers()) {
 			assertFalse(a.isVisible());
+			assertEquals(AnswerState.IDLE, a.getState());
 		}
 		for (int i = 0; i < 4; i++) {
-			assertNotNull(controller.getAnswer(i));
+			final Answer a = controller.getAnswer(i);
+			assertNotNull(a);
+			assertFalse(a.isVisible());
+			assertEquals(AnswerState.IDLE, a.getState());
 		}
 		assertEquals(q.getText(), controller.getQuestionText());
 		assertEquals(2, controller.getCurrentIndex().getNumber());

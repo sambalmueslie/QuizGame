@@ -50,13 +50,19 @@ public class MainWindowController implements Initializable {
 			answer = 3;
 		}
 
+		if (answer < 0) return;
+
 		gameController.handleAnswer(answer);
 		updateQuestionAndAnswers();
+		event.consume();
 	}
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
-
+		answerA.setFocusTraversable(false);
+		answerB.setFocusTraversable(false);
+		answerC.setFocusTraversable(false);
+		answerD.setFocusTraversable(false);
 		index.setCellFactory(listView -> new IndexListCell());
 	}
 
@@ -65,6 +71,7 @@ public class MainWindowController implements Initializable {
 			gameController.handleUserInteraction();
 			updateQuestionAndAnswers();
 		}
+		e.consume();
 	}
 
 	/**

@@ -82,7 +82,7 @@ public class GameControllerTest {
 		// GameState.ANSWER_GIVEN;
 		time = controller.getRemainingTime();
 		assertEquals(0, time);
-		assertEquals(GameState.ANSWER_GIVEN, controller.getState());
+		assertEquals(GameState.FINISHED, controller.getState());
 	}
 
 	@Test

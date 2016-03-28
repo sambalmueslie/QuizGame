@@ -3,6 +3,7 @@ package de.sambalmueslie.quiz_game;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import de.sambalmueslie.quiz_game.controller.GameController;
 import de.sambalmueslie.quiz_game.data.Answer;
 import de.sambalmueslie.quiz_game.data.Index;
 import de.sambalmueslie.quiz_game.data.Model;

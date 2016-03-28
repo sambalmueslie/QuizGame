@@ -1,4 +1,4 @@
-package de.sambalmueslie.quiz_game;
+package de.sambalmueslie.quiz_game.controller;
 
 import java.util.List;
 
@@ -7,27 +7,27 @@ import de.sambalmueslie.quiz_game.data.*;
 public class GameController {
 	private static final int DEFAULT_REMAINING_TIME = 60;
 
-	Answer getAnswer(final int index) {
+	public Answer getAnswer(final int index) {
 		if (currentQuestion == null) return null;
 		final List<Answer> answers = currentQuestion.getAnswers();
 		if (index >= answers.size()) return null;
 		return answers.get(index);
 	}
 
-	Index getCurrentIndex() {
+	public Index getCurrentIndex() {
 		if (currentQuestion == null) return null;
 		return model.getIndexByLevel(currentQuestionLevel);
 	}
 
-	String getQuestionText() {
+	public String getQuestionText() {
 		return currentQuestion == null ? null : currentQuestion.getText();
 	}
 
-	int getRemainingTime() {
+	public int getRemainingTime() {
 		return remainingTime;
 	}
 
-	void handleAnswer(final int index) {
+	public void handleAnswer(final int index) {
 		if (state != GameState.QUESTION_ONGOING) return;
 
 		final List<Answer> answers = currentQuestion.getAnswers();
@@ -44,11 +44,11 @@ public class GameController {
 		state = GameState.ANSWER_GIVEN;
 	}
 
-	void handleGameLoop() {
+	public void handleGameLoop() {
 		updateClock();
 	}
 
-	void handleUserInteraction() {
+	public void handleUserInteraction() {
 		if (state == GameState.PREPARE_QUESTION) {
 			makeAnswersVisible();
 			state = GameState.QUESTION_ONGOING;
@@ -67,7 +67,7 @@ public class GameController {
 	 * @param model
 	 *            {@link #model}
 	 */
-	void setModel(final Model model) {
+	public void setModel(final Model model) {
 		this.model = model;
 	}
 
@@ -93,6 +93,7 @@ public class GameController {
 		final boolean correct = selectedAnswer != null && selectedAnswer.equals(correctAnswer);
 		if (correct) {
 			selectedAnswer.setState(AnswerState.RIGHT);
+			currentQuestionLevel++;
 		} else if (selectedAnswer != null) {
 			selectedAnswer.setState(AnswerState.WRONG);
 			correctAnswer.setState(AnswerState.RIGHT);
@@ -121,7 +122,7 @@ public class GameController {
 	/** the current {@link Question}. */
 	private Question currentQuestion;
 	/** the current question level. */
-	private final int currentQuestionLevel = 1;
+	private int currentQuestionLevel = 1;
 	/** the {@link Model}. */
 	private Model model;
 	/** the remaining time. */

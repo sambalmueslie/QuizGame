@@ -49,15 +49,26 @@ public class GameController {
 	}
 
 	public void handleUserInteraction() {
-		if (state == GameState.PREPARE_QUESTION) {
+		switch (state) {
+		case DETERMINE_NEXT_QUESTION:
+			getNewQuestion();
+			resetClock();
+			state = GameState.PREPARE_QUESTION;
+			break;
+		case PREPARE_QUESTION:
 			makeAnswersVisible();
 			state = GameState.QUESTION_ONGOING;
-		} else if (state == GameState.ANSWER_GIVEN) {
+			break;
+		case ANSWER_GIVEN:
 			showAnswerResult();
+			state = GameState.SHOW_ANSWER_RESULT;
+			break;
+		case SHOW_ANSWER_RESULT:
+			currentQuestion = null;
+			selectedAnswer = null;
 			state = GameState.DETERMINE_NEXT_QUESTION;
-		} else if (state == GameState.DETERMINE_NEXT_QUESTION) {
-			getNewQuestion();
-			state = GameState.PREPARE_QUESTION;
+		default:
+			break;
 		}
 	}
 
@@ -71,6 +82,34 @@ public class GameController {
 		this.model = model;
 	}
 
+	/**
+	 * @return the {@link #currentQuestion}
+	 */
+	Question getCurrentQuestion() {
+		return currentQuestion;
+	}
+
+	/**
+	 * @return the {@link #currentQuestionLevel}
+	 */
+	int getCurrentQuestionLevel() {
+		return currentQuestionLevel;
+	}
+
+	/**
+	 * @return the {@link #selectedAnswer}
+	 */
+	Answer getSelectedAnswer() {
+		return selectedAnswer;
+	}
+
+	/**
+	 * @return the {@link #state}
+	 */
+	GameState getState() {
+		return state;
+	}
+
 	private void getNewQuestion() {
 		selectedAnswer = null;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
@@ -79,6 +118,7 @@ public class GameController {
 	}
 
 	private void makeAnswersVisible() {
+		if (currentQuestion == null) return;
 		final List<Answer> answers = currentQuestion.getAnswers();
 		answers.forEach(a -> a.setVisible(true));
 	}
@@ -86,6 +126,13 @@ public class GameController {
 	private void resetAnswer(final Answer a) {
 		a.setState(AnswerState.IDLE);
 		a.setVisible(false);
+	}
+
+	/**
+	 * Reset the clock.
+	 */
+	private void resetClock() {
+		remainingTime = DEFAULT_REMAINING_TIME;
 	}
 
 	private void showAnswerResult() {
@@ -111,9 +158,6 @@ public class GameController {
 				state = GameState.ANSWER_GIVEN;
 			}
 			break;
-		case DETERMINE_NEXT_QUESTION:
-			remainingTime = DEFAULT_REMAINING_TIME;
-			break;
 		default:
 			break;
 		}
@@ -121,6 +165,7 @@ public class GameController {
 
 	/** the current {@link Question}. */
 	private Question currentQuestion;
+
 	/** the current question level. */
 	private int currentQuestionLevel = 1;
 	/** the {@link Model}. */
@@ -129,6 +174,7 @@ public class GameController {
 	private int remainingTime;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
+
 	/** the {@link GameState}. */
 	private GameState state = GameState.DETERMINE_NEXT_QUESTION;
 }

@@ -64,12 +64,16 @@ public class Answer {
 		this.visible = visible;
 	}
 
+	@Override
+	public String toString() {
+		return "Answer [prefix=" + prefix + ", state=" + state + ", text=" + text + ", visible=" + visible + "]";
+	}
+
 	/** the prefix. */
 	private String prefix;
 
 	/** the {@link AnswerState}. */
 	private AnswerState state;
-
 	/** the text. */
 	private String text;
 	/** is the answer visible. */

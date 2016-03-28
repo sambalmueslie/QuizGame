@@ -28,7 +28,7 @@ public class GameController {
 	}
 
 	public void handleAnswer(final int index) {
-		if (state != GameState.QUESTION_ONGOING && state != GameState.ANSWER_GIVEN) return;
+		if (getState() != GameState.QUESTION_ONGOING && getState() != GameState.ANSWER_GIVEN) return;
 
 		final List<Answer> answers = currentQuestion.getAnswers();
 
@@ -43,7 +43,7 @@ public class GameController {
 		answers.forEach(a -> a.setState(AnswerState.IDLE));
 		selectedAnswer.setState(AnswerState.SELECTED);
 		currentQuestion.setAnswered(true);
-		state = GameState.ANSWER_GIVEN;
+		setState(GameState.ANSWER_GIVEN);
 	}
 
 	public void handleGameLoop() {
@@ -51,27 +51,35 @@ public class GameController {
 	}
 
 	public void handleUserInteraction() {
-		switch (state) {
+		switch (getState()) {
 		case DETERMINE_NEXT_QUESTION:
 			getNewQuestion();
 			resetClock();
-			state = GameState.PREPARE_QUESTION;
+			setState(GameState.PREPARE_QUESTION);
 			break;
 		case PREPARE_QUESTION:
 			makeAnswersVisible();
-			state = GameState.QUESTION_ONGOING;
+			setState(GameState.QUESTION_ONGOING);
 			break;
 		case ANSWER_GIVEN:
 			showAnswerResult();
-			state = GameState.SHOW_ANSWER_RESULT;
+			setState(GameState.SHOW_ANSWER_RESULT);
 			break;
 		case SHOW_ANSWER_RESULT:
 			currentQuestion = null;
 			selectedAnswer = null;
-			state = GameState.DETERMINE_NEXT_QUESTION;
+			setState(GameState.DETERMINE_NEXT_QUESTION);
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * @param listener
+	 *            the listener to set
+	 */
+	public void setListener(final GameControllerListener listener) {
+		this.listener = listener;
 	}
 
 	/**
@@ -112,11 +120,39 @@ public class GameController {
 		return state;
 	}
 
+	private void gameFinished(final boolean won, final boolean timeout) {
+		setState(GameState.FINISHED);
+		if (listener == null) return;
+
+		int prize = 0;
+		if (won) {
+			final List<Index> indexs = model.getIndexs();
+			prize = indexs.get(indexs.size() - 1).getMoney();
+		} else {
+			for (int i = 0; i < currentQuestionLevel; i++) {
+				final Index index = model.getIndexByLevel(i);
+				if (index != null && index.isSafe()) {
+					prize = index.getMoney();
+				}
+			}
+		}
+
+		listener.gameFinished(won, timeout, prize);
+	}
+
 	private void getNewQuestion() {
 		selectedAnswer = null;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
-		if (currentQuestion == null) return;
-		currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
+		if (currentQuestion == null) {
+			gameFinished(true, false);
+		} else {
+			currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
+		}
+	}
+
+	private boolean isAnswerCorrect() {
+		final Answer correctAnswer = currentQuestion.getCorrectAnswer();
+		return selectedAnswer != null && selectedAnswer.equals(correctAnswer);
 	}
 
 	private void makeAnswersVisible() {
@@ -137,15 +173,20 @@ public class GameController {
 		remainingTime = DEFAULT_REMAINING_TIME;
 	}
 
+	private void setState(final GameState state) {
+		this.state = state;
+	}
+
 	private void showAnswerResult() {
 		final Answer correctAnswer = currentQuestion.getCorrectAnswer();
-		final boolean correct = selectedAnswer != null && selectedAnswer.equals(correctAnswer);
+		final boolean correct = isAnswerCorrect();
 		if (correct) {
 			selectedAnswer.setState(AnswerState.RIGHT);
 			currentQuestionLevel++;
 		} else if (selectedAnswer != null) {
 			selectedAnswer.setState(AnswerState.WRONG);
 			correctAnswer.setState(AnswerState.RIGHT);
+			gameFinished(false, false);
 		}
 	}
 
@@ -153,11 +194,11 @@ public class GameController {
 	 * Update the clock.
 	 */
 	private void updateClock() {
-		switch (state) {
+		switch (getState()) {
 		case QUESTION_ONGOING:
 			remainingTime--;
 			if (remainingTime <= 0) {
-				state = GameState.ANSWER_GIVEN;
+				gameFinished(false, true);
 			}
 			break;
 		default:
@@ -167,9 +208,10 @@ public class GameController {
 
 	/** the current {@link Question}. */
 	private Question currentQuestion;
-
 	/** the current question level. */
 	private int currentQuestionLevel = 1;
+	/** the {@link GameControllerListener}. */
+	private GameControllerListener listener;
 	/** the {@link Model}. */
 	private Model model;
 	/** the remaining time. */

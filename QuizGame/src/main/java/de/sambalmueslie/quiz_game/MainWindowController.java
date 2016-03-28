@@ -31,8 +31,6 @@ public class MainWindowController implements Initializable {
 		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> mainLoop()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
-
-		gameController = new GameController();
 	}
 
 	@FXML
@@ -66,6 +64,14 @@ public class MainWindowController implements Initializable {
 		index.setCellFactory(listView -> new IndexListCell());
 	}
 
+	/**
+	 * @param gameController
+	 *            the gameController to set
+	 */
+	public void setGameController(final GameController gameController) {
+		this.gameController = gameController;
+	}
+
 	void handleKeyTyped(final KeyEvent e) {
 		if (e.getCode() == KeyCode.SPACE || e.getCharacter().equals(" ")) {
 			gameController.handleUserInteraction();
@@ -92,6 +98,7 @@ public class MainWindowController implements Initializable {
 	 * The main loop of the game.
 	 */
 	private void mainLoop() {
+		if (gameController == null) return;
 		gameController.handleGameLoop();
 		clock.setText(Integer.toString(gameController.getRemainingTime()));
 		updateQuestionAndAnswers();
@@ -157,7 +164,7 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private Label clock;
 	/** the {@link GameController}. */
-	private final GameController gameController;
+	private GameController gameController;
 	@FXML
 	private ListView<Index> index;
 	@FXML

@@ -1,7 +1,5 @@
 package de.sambalmueslie.quiz_game;
 
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +44,7 @@ public class QuizGame extends Application {
 
 			final Scene scene = new Scene(root, 1024, 768);
 			scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
+			scene.setOnKeyTyped(e -> showStartWindow());
 
 			stage.setTitle("Quiz Game - Finished");
 			stage.setScene(scene);
@@ -70,6 +69,7 @@ public class QuizGame extends Application {
 			final Scene scene = new Scene(root, 1024, 768);
 			scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
 			scene.setOnKeyTyped(e -> controller.handleKeyTyped(e));
+			gameController.handleUserInteraction();
 
 			stage.setTitle("Quiz Game - Game");
 			stage.setScene(scene);
@@ -82,7 +82,7 @@ public class QuizGame extends Application {
 	/**
 	 * Show the start window.
 	 */
-	private void showStartWindow() throws IOException {
+	private void showStartWindow() {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("StartWindow.fxml"));
 			final Parent root = fxmlLoader.load();

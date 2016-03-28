@@ -64,20 +64,20 @@ public class MainWindowController implements Initializable {
 		index.setCellFactory(listView -> new IndexListCell());
 	}
 
-	/**
-	 * @param gameController
-	 *            the gameController to set
-	 */
-	public void setGameController(final GameController gameController) {
-		this.gameController = gameController;
-	}
-
 	void handleKeyTyped(final KeyEvent e) {
 		if (e.getCode() == KeyCode.SPACE || e.getCharacter().equals(" ")) {
 			gameController.handleUserInteraction();
 			updateQuestionAndAnswers();
 		}
 		e.consume();
+	}
+
+	/**
+	 * @param gameController
+	 *            the gameController to set
+	 */
+	void setGameController(final GameController gameController) {
+		this.gameController = gameController;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class MainWindowController implements Initializable {
 
 		final ObservableList<Index> items = index.getItems();
 		items.addAll(model.getIndexs());
-
+		updateQuestionAndAnswers();
 	}
 
 	/**

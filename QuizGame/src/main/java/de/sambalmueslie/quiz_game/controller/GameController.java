@@ -136,8 +136,11 @@ public class GameController {
 				}
 			}
 		}
-
 		listener.gameFinished(won, timeout, prize);
+		selectedAnswer = null;
+		currentQuestion = null;
+		currentQuestionLevel = 1;
+		remainingTime = DEFAULT_REMAINING_TIME;
 	}
 
 	private void getNewQuestion() {

@@ -75,9 +75,24 @@ public class Question {
 		this.text = text;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Question [answers=");
+		builder.append(answers);
+		builder.append(", level=");
+		builder.append(level);
+		builder.append(", text=");
+		builder.append(text);
+		builder.append("]");
+		return builder.toString();
+	}
+
 	/** is the question answered. */
 	private boolean answered;
-
 	/** the {@link Answer}s. */
 	private final List<Answer> answers = new LinkedList<>();
 	/** the correct {@link Answer}. */

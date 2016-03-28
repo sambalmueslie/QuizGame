@@ -18,6 +18,7 @@ public class Model {
 	}
 
 	public Index getIndexByLevel(final int currentQuestionLevel) {
+		if (indexs.isEmpty()) return null;
 		if (currentQuestionLevel <= 0)
 			return indexs.get(indexs.size() - 1);
 		else if (currentQuestionLevel >= indexs.size())

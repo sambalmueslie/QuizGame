@@ -4,10 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.sambalmueslie.quiz_game.controller.GameController;
-import de.sambalmueslie.quiz_game.data.Answer;
-import de.sambalmueslie.quiz_game.data.Index;
-import de.sambalmueslie.quiz_game.data.LifeLine;
-import de.sambalmueslie.quiz_game.data.Model;
+import de.sambalmueslie.quiz_game.data.*;
 import de.sambalmueslie.quiz_game.view.IndexListCell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -90,20 +87,21 @@ public class MainWindowController implements Initializable {
 	 *            the model
 	 */
 	void setModel(final Model model) {
+		this.model = model;
 		gameController.setModel(model);
 
 		final ObservableList<Index> items = index.getItems();
 		items.addAll(model.getIndexs());
 
-		model.getLifeLines().forEach(l -> lifelinePanel.getChildren().add(createLifeLineBtn(l)));
 		updateQuestionAndAnswers();
 	}
 
 	private Button createLifeLineBtn(final LifeLine lifeLine) {
-		final Button button = new Button();
+		final String text = lifeLine.getType() == LifeLineType.AUDIENCE ? "Pub" : "50:50";
+		final Button button = new Button(text);
 		button.setAlignment(Pos.CENTER);
 		button.setPrefHeight(100.0);
-		button.setPrefHeight(100.0);
+		button.setPrefWidth(100.0);
 		button.setOnAction(e -> reqUsageLifeLine(e, lifeLine));
 		button.getStyleClass().add("lbl_lifeline");
 		button.setDisable(false);
@@ -121,9 +119,7 @@ public class MainWindowController implements Initializable {
 	}
 
 	private void reqUsageLifeLine(final ActionEvent e, final LifeLine lifeLine) {
-
-		// TODO Auto-generated method stub
-		System.out.println(lifeLine.getType());
+		gameController.requestLifeLineUsage(lifeLine);
 	}
 
 	/**
@@ -173,10 +169,13 @@ public class MainWindowController implements Initializable {
 		setAnswer(answerD, gameController.getAnswer(3));
 
 		index.getSelectionModel().select(gameController.getCurrentIndex());
+		lifelinePanel.getChildren().clear();
+		model.getLifeLines().stream().filter(LifeLine::isAvailable).map(this::createLifeLineBtn).forEach(lifelinePanel.getChildren()::add);
 	}
 
 	@FXML
 	private Button answerA;
+
 	@FXML
 	private Button answerB;
 	@FXML
@@ -191,6 +190,7 @@ public class MainWindowController implements Initializable {
 	private ListView<Index> index;
 	@FXML
 	private FlowPane lifelinePanel;
+	private Model model;
 	@FXML
 	private Label question;
 }

@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import de.sambalmueslie.quiz_game.controller.GameController;
 import de.sambalmueslie.quiz_game.data.Answer;
 import de.sambalmueslie.quiz_game.data.Index;
+import de.sambalmueslie.quiz_game.data.LifeLine;
 import de.sambalmueslie.quiz_game.data.Model;
 import de.sambalmueslie.quiz_game.view.IndexListCell;
 import javafx.animation.Animation;
@@ -15,11 +16,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.util.Duration;
 
 public class MainWindowController implements Initializable {
@@ -91,7 +94,20 @@ public class MainWindowController implements Initializable {
 
 		final ObservableList<Index> items = index.getItems();
 		items.addAll(model.getIndexs());
+
+		model.getLifeLines().forEach(l -> lifelinePanel.getChildren().add(createLifeLineBtn(l)));
 		updateQuestionAndAnswers();
+	}
+
+	private Button createLifeLineBtn(final LifeLine lifeLine) {
+		final Button button = new Button();
+		button.setAlignment(Pos.CENTER);
+		button.setPrefHeight(100.0);
+		button.setPrefHeight(100.0);
+		button.setOnAction(e -> reqUsageLifeLine(e, lifeLine));
+		button.getStyleClass().add("lbl_lifeline");
+		button.setDisable(false);
+		return button;
 	}
 
 	/**
@@ -102,6 +118,12 @@ public class MainWindowController implements Initializable {
 		gameController.handleGameLoop();
 		clock.setText(Integer.toString(gameController.getRemainingTime()));
 		updateQuestionAndAnswers();
+	}
+
+	private void reqUsageLifeLine(final ActionEvent e, final LifeLine lifeLine) {
+
+		// TODO Auto-generated method stub
+		System.out.println(lifeLine.getType());
 	}
 
 	/**
@@ -168,12 +190,7 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private ListView<Index> index;
 	@FXML
-	private Label lifelineAudience;
-	@FXML
-	private Label lifelineFiftyFifty;
-	@FXML
-	private Label lifelineTel;
-
+	private FlowPane lifelinePanel;
 	@FXML
 	private Label question;
 }

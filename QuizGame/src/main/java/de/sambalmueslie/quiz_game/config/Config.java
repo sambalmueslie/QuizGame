@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.sambalmueslie.quiz_game.data.Index;
+import de.sambalmueslie.quiz_game.data.LifeLineType;
 import de.sambalmueslie.quiz_game.data.Question;
 
 public class Config {
@@ -14,6 +15,13 @@ public class Config {
 	 */
 	public List<Index> getIndexs() {
 		return indexs;
+	}
+
+	/**
+	 * @return the {@link #lifeLineTypes}
+	 */
+	public List<LifeLineType> getLifeLineTypes() {
+		return lifeLineTypes;
 	}
 
 	/**
@@ -32,6 +40,14 @@ public class Config {
 	}
 
 	/**
+	 * @param lifeLineTypes
+	 *            the lifeLineTypes to set
+	 */
+	public void setLifeLineTypes(final List<LifeLineType> lifeLineTypes) {
+		this.lifeLineTypes = lifeLineTypes;
+	}
+
+	/**
 	 * @param questions
 	 *            the questions to set
 	 */
@@ -41,6 +57,9 @@ public class Config {
 
 	/** the {@link Index} {@link List}. */
 	private List<Index> indexs = new ArrayList<>();
+
+	/** the {@link Index} {@link List}. */
+	private List<LifeLineType> lifeLineTypes = new ArrayList<>();
 
 	/** the {@link Question}s. */
 	private List<ConfigQuestion> questions = new LinkedList<>();

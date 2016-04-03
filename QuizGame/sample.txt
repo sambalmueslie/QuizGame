@@ -76,87 +76,37 @@
       "safe": true
     }
   ],
+  "lifeLineTypes": [
+    "AUDIENCE",
+    "FIFITY_FIFTY"
+  ],
   "questions": [
     {
-      "answerA": "Benjamin",
-      "answerB": "Manasse",
-      "answerC": "Ruben",
-      "answerD": "Josef",
-      "correct": 0,
-      "level": 15,
-      "text": "Welcher israelitische Stamm hat sich, um einen Schwur zu umgehen, Frauen auf einem Fest in Absprache erbeutet?"
+      "answerA": "a",
+      "answerB": "b",
+      "answerC": "c",
+      "answerD": "d",
+      "correct": 97,
+      "level": 1,
+      "text": "text"
     },
     {
-      "answerA": "Deborah",
-      "answerB": "Gideon",
-      "answerC": "Jael",
-      "answerD": "Simson",
-      "correct": 2,
-      "level": 5,
-      "text": "Welche Person war kein Richter in Israel?"
-    },
-    {
-      "answerA": "David",
-      "answerB": "Salomo",
-      "answerC": "Saul",
-      "answerD": "Rehabeam",
-      "correct": 0,
-      "level": 3,
-      "text": "Welcher König musste sich von seiner Frau für seinen ausgefallenen Lobpreisstil ,Kritik anhören?"
-    },
-    {
-      "answerA": "David",
-      "answerB": "Salomo",
-      "answerC": "Saul",
-      "answerD": "Rehabeam",
-      "correct": 0,
-      "level": 3,
-      "text": "Wie viele Augen und Hörner hatte das Lamm, welches in der Offenbarung erwähnt wird?"
-    },
-    {
-      "answerA": "Philadelphia",
-      "answerB": "Laodizea",
-      "answerC": "Korinth",
-      "answerD": "Smyrna",
-      "correct": 2,
-      "level": 6,
-      "text": "Welche Stadt gehört nicht zu den 7 Gemeinden an welche die Sendschreiben gerichtet waren?"
-    },
-    {
-      "answerA": "Asser",
-      "answerB": "Dan",
-      "answerC": "Juda",
-      "answerD": "Naftali",
-      "correct": 1,
-      "level": 14,
-      "text": "In der Offenbarung werden bei den 144.000 die Stämme Israels aufgezählt. Welcher Stamm wird nicht erwähnt?"
-    },
-    {
-      "answerA": "Keine",
-      "answerB": "Primzahl",
-      "answerC": "Göttliche Zahl",
-      "answerD": "Mensch",
-      "correct": 1,
+      "answerA": "a",
+      "answerB": "b",
+      "answerC": "c",
+      "answerD": "d",
+      "correct": 97,
       "level": 2,
-      "text": "Welche Bedeutung hat die Zahl 7 in der Bibel?"
+      "text": "text"
     },
     {
-      "answerA": "800-200 v.Chr",
-      "answerB": "2000-100 v. Chr",
-      "answerC": "1400-400 v. Chr",
-      "answerD": "1400-800 v. Chr",
-      "correct": 2,
-      "level": 12,
-      "text": "In welchem Zeitraum wurde das Alte Testament geschrieben?"
-    },
-    {
-      "answerA": "31176",
-      "answerB": "45289",
-      "answerC": "25001",
-      "answerD": "100",
-      "correct": 0,
-      "level": 13,
-      "text": "Wie viele Verse hat die Bibel?"
+      "answerA": "a",
+      "answerB": "b",
+      "answerC": "c",
+      "answerD": "d",
+      "correct": 97,
+      "level": 3,
+      "text": "text"
     }
   ]
 }

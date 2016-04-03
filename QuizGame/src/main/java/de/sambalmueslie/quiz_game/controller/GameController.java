@@ -1,5 +1,7 @@
 package de.sambalmueslie.quiz_game.controller;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.sambalmueslie.quiz_game.data.*;
@@ -74,6 +76,30 @@ public class GameController {
 		}
 	}
 
+	public void requestLifeLineUsage(final LifeLine lifeLine) {
+		if (!lifeLine.isAvailable()) return;
+		if (getState() != GameState.QUESTION_ONGOING) return;
+
+		switch (lifeLine.getType()) {
+		case AUDIENCE:
+			// TODO show ask the audience!
+			break;
+		case FIFITY_FIFTY:
+			final List<Answer> answers = new LinkedList<>(currentQuestion.getAnswers());
+			Collections.shuffle(answers);
+			answers.remove(currentQuestion.getCorrectAnswer());
+
+			for (int i = 0; i < 2; i++) {
+				answers.get(i).setVisible(false);
+			}
+
+			break;
+		default:
+			break;
+		}
+		lifeLine.setAvailable(false);
+	}
+
 	/**
 	 * @param listener
 	 *            the listener to set
@@ -90,6 +116,8 @@ public class GameController {
 	 */
 	public void setModel(final Model model) {
 		this.model = model;
+
+		model.getLifeLines().forEach(l -> l.setAvailable(true));
 	}
 
 	/**
@@ -221,6 +249,7 @@ public class GameController {
 	private int remainingTime;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
+
 	/** the {@link GameState}. */
 	private GameState state = GameState.DETERMINE_NEXT_QUESTION;
 }

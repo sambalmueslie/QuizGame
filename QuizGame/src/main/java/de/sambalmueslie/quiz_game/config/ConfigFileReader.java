@@ -7,16 +7,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
-import de.sambalmueslie.quiz_game.data.Index;
-import de.sambalmueslie.quiz_game.data.Model;
-import de.sambalmueslie.quiz_game.data.Question;
-import de.sambalmueslie.quiz_game.data.QuestionHelper;
+import de.sambalmueslie.quiz_game.data.*;
 
 public class ConfigFileReader {
 
@@ -45,6 +43,8 @@ public class ConfigFileReader {
 		config.getQuestions().add(new ConfigQuestion("text", 2, "a", "b", "c", "d", 'a'));
 		config.getQuestions().add(new ConfigQuestion("text", 3, "a", "b", "c", "d", 'a'));
 
+		Arrays.asList(LifeLineType.values()).forEach(config.getLifeLineTypes()::add);
+
 		final String data = gson.toJson(config);
 
 		final Path path = Paths.get(fileName);
@@ -59,9 +59,11 @@ public class ConfigFileReader {
 		final Config config = gson.fromJson(new FileReader(fileName), Config.class);
 
 		final Model model = new Model();
-		config.getIndexs().forEach(model::addIndex);
+		config.getIndexs().forEach(model::add);
 
-		config.getQuestions().stream().map(ConfigFileReader::convert).forEach(model::addQuestion);
+		config.getQuestions().stream().map(ConfigFileReader::convert).forEach(model::add);
+
+		config.getLifeLineTypes().stream().map(lt -> new LifeLine(lt)).forEach(model::add);
 		return model;
 	}
 

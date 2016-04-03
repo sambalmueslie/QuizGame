@@ -26,7 +26,7 @@ public class ModelTest {
 	@Test
 	public void testIndex() {
 		for (int i = 1; i < 16; i++) {
-			model.addIndex(new Index(i, i * 10, false));
+			model.add(new Index(i, i * 10, false));
 		}
 
 		assertEquals(15, model.getIndexs().size());
@@ -42,18 +42,21 @@ public class ModelTest {
 
 	@Test
 	public void testInvalidParameter() {
-		model.addQuestion(null);
+		model.add((Question) null);
 		assertNull(model.getQuestionByLevel(0));
 
-		model.addIndex(null);
+		model.add((Index) null);
 		assertNull(model.getIndexByLevel(0));
 		assertTrue(model.getIndexs().isEmpty());
+
+		model.add((LifeLine) null);
+		assertTrue(model.getLifeLines().isEmpty());
 	}
 
 	@Test
 	public void testQuestion() {
 		for (int i = 1; i < 16; i++) {
-			model.addQuestion(QuestionHelper.createQuestion("asdf", "a", "b", "c", "d", i, 'a'));
+			model.add(QuestionHelper.createQuestion("asdf", "a", "b", "c", "d", i, 'a'));
 		}
 
 		for (int i = 1; i < 16; i++) {
@@ -66,9 +69,9 @@ public class ModelTest {
 	@Test
 	public void testQuestionIgnoreAnswered() {
 		final Question q1 = QuestionHelper.createQuestion("asdf", "a", "b", "c", "d", 1, 'a');
-		model.addQuestion(q1);
+		model.add(q1);
 		final Question q2 = QuestionHelper.createQuestion("asdf", "a", "b", "c", "d", 1, 'a');
-		model.addQuestion(q2);
+		model.add(q2);
 		q2.setAnswered(true);
 
 		final Question q = model.getQuestionByLevel(1);

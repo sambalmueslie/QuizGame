@@ -76,6 +76,10 @@
       "safe": true
     }
   ],
+    "lifeLineTypes": [
+    "AUDIENCE",
+    "FIFITY_FIFTY"
+  ],
   "questions": [
     {
       "answerA": "Benjamin",

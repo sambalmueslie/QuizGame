@@ -5,14 +5,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Model {
-
-	public void addIndex(final Index index) {
+	public void add(final Index index) {
 		if (index == null) return;
 		indexs.add(index);
 		indexs.sort((o1, o2) -> Integer.compare(o2.getNumber(), o1.getNumber()));
 	}
 
-	public void addQuestion(final Question question) {
+	public void add(final LifeLine lifeLine) {
+		if (lifeLine == null) return;
+		lifeLines.add(lifeLine);
+	}
+
+	public void add(final Question question) {
 		if (question == null) return;
 		questions.add(question);
 	}
@@ -31,6 +35,10 @@ public class Model {
 		return Collections.unmodifiableList(indexs);
 	}
 
+	public List<LifeLine> getLifeLines() {
+		return Collections.unmodifiableList(lifeLines);
+	}
+
 	public Question getQuestionByLevel(final int level) {
 		if (questions.isEmpty()) return null;
 		final Stream<Question> stream = questions.stream();
@@ -47,6 +55,9 @@ public class Model {
 
 	/** the {@link Index} {@link List}. */
 	private final List<Index> indexs = new ArrayList<>();
+
+	/** the {@link LifeLine}s. */
+	private final List<LifeLine> lifeLines = new LinkedList<>();
 
 	/** the {@link Question}s. */
 	private final List<Question> questions = new LinkedList<>();

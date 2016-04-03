@@ -4,9 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.sambalmueslie.quiz_game.controller.GameController;
-import de.sambalmueslie.quiz_game.data.Answer;
-import de.sambalmueslie.quiz_game.data.Index;
-import de.sambalmueslie.quiz_game.data.Model;
+import de.sambalmueslie.quiz_game.data.*;
 import de.sambalmueslie.quiz_game.view.IndexListCell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,11 +13,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.util.Duration;
 
 public class MainWindowController implements Initializable {
@@ -87,11 +87,25 @@ public class MainWindowController implements Initializable {
 	 *            the model
 	 */
 	void setModel(final Model model) {
+		this.model = model;
 		gameController.setModel(model);
 
 		final ObservableList<Index> items = index.getItems();
 		items.addAll(model.getIndexs());
+
 		updateQuestionAndAnswers();
+	}
+
+	private Button createLifeLineBtn(final LifeLine lifeLine) {
+		final String text = lifeLine.getType() == LifeLineType.AUDIENCE ? "Pub" : "50:50";
+		final Button button = new Button(text);
+		button.setAlignment(Pos.CENTER);
+		button.setPrefHeight(100.0);
+		button.setPrefWidth(100.0);
+		button.setOnAction(e -> reqUsageLifeLine(e, lifeLine));
+		button.getStyleClass().add("lbl_lifeline");
+		button.setDisable(false);
+		return button;
 	}
 
 	/**
@@ -102,6 +116,10 @@ public class MainWindowController implements Initializable {
 		gameController.handleGameLoop();
 		clock.setText(Integer.toString(gameController.getRemainingTime()));
 		updateQuestionAndAnswers();
+	}
+
+	private void reqUsageLifeLine(final ActionEvent e, final LifeLine lifeLine) {
+		gameController.requestLifeLineUsage(lifeLine);
 	}
 
 	/**
@@ -151,10 +169,13 @@ public class MainWindowController implements Initializable {
 		setAnswer(answerD, gameController.getAnswer(3));
 
 		index.getSelectionModel().select(gameController.getCurrentIndex());
+		lifelinePanel.getChildren().clear();
+		model.getLifeLines().stream().filter(LifeLine::isAvailable).map(this::createLifeLineBtn).forEach(lifelinePanel.getChildren()::add);
 	}
 
 	@FXML
 	private Button answerA;
+
 	@FXML
 	private Button answerB;
 	@FXML
@@ -168,12 +189,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private ListView<Index> index;
 	@FXML
-	private Label lifelineAudience;
-	@FXML
-	private Label lifelineFiftyFifty;
-	@FXML
-	private Label lifelineTel;
-
+	private FlowPane lifelinePanel;
+	private Model model;
 	@FXML
 	private Label question;
 }

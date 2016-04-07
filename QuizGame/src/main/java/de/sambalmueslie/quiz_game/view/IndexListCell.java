@@ -12,7 +12,7 @@ public class IndexListCell extends ListCell<Index> {
 		super.updateItem(item, empty);
 		if (item == null) return;
 		setTextAlignment(TextAlignment.LEFT);
-		setText(String.format("%02d   € %d", item.getNumber(), item.getMoney()));
+		setText(String.format("%02d  â‚¬ %d", item.getNumber(), item.getMoney()));
 		if (item.isSafe()) {
 			setTextFill(Paint.valueOf("white"));
 		} else {

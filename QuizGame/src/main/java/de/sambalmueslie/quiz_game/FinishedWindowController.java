@@ -11,18 +11,19 @@ public class FinishedWindowController {
 	 *            is won
 	 * @param timeout
 	 *            is timeout
+	 * @param exit
 	 * @param prize
 	 *            the prize
 	 */
-	public void setup(final boolean won, final boolean timeout, final int prize) {
-		if (won) {
-			result.setText("Herzlichen Glückwunsch");
+	public void setup(final boolean won, final boolean timeout, final boolean exit, final int prize) {
+		if (won || exit) {
+			result.setText("Herzlichen GlÃ¼ckwunsch");
 		} else if (timeout) {
 			result.setText("Leider zu langsam");
 		} else {
 			result.setText("Leider falsche Antwort");
 		}
-		win.setText("Ihr Gewinn beträgt: " + prize + " €");
+		win.setText("Ihr Gewinn betrÃ¤gt: " + prize + " â‚¬");
 	}
 
 	@FXML

@@ -68,7 +68,12 @@ public class MainWindowController implements Initializable {
 		if (e.getCode() == KeyCode.SPACE || e.getCharacter().equals(" ")) {
 			gameController.handleUserInteraction();
 			updateQuestionAndAnswers();
+		} else if (e.getCode() == KeyCode.ESCAPE) {
+			System.exit(0);
+		} else if (e.getCode() == KeyCode.E || e.getCharacter().equals("e")) {
+			gameController.handleExitGame();
 		}
+
 		e.consume();
 	}
 

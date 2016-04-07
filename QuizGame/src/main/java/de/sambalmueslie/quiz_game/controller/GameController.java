@@ -48,6 +48,10 @@ public class GameController {
 		setState(GameState.ANSWER_GIVEN);
 	}
 
+	public void handleExitGame() {
+		gameFinished(false, false, true);
+	}
+
 	public void handleGameLoop() {
 		updateClock();
 	}
@@ -148,7 +152,7 @@ public class GameController {
 		return state;
 	}
 
-	private void gameFinished(final boolean won, final boolean timeout) {
+	private void gameFinished(final boolean won, final boolean timeout, final boolean exit) {
 		setState(GameState.FINISHED);
 		if (listener == null) return;
 
@@ -156,6 +160,9 @@ public class GameController {
 		if (won) {
 			final List<Index> indexs = model.getIndexs();
 			prize = indexs.get(0).getMoney();
+		} else if (exit) {
+			final Index index = model.getIndexByLevel(currentQuestionLevel);
+			prize = index.getMoney();
 		} else {
 			for (int i = 0; i < currentQuestionLevel; i++) {
 				final Index index = model.getIndexByLevel(i);
@@ -164,7 +171,7 @@ public class GameController {
 				}
 			}
 		}
-		listener.gameFinished(won, timeout, prize);
+		listener.gameFinished(won, timeout, exit, prize);
 		selectedAnswer = null;
 		currentQuestion = null;
 		currentQuestionLevel = 1;
@@ -177,7 +184,7 @@ public class GameController {
 		final boolean finished = indexs.get(0).getNumber() <= currentQuestionLevel;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
 		if (currentQuestion == null || finished) {
-			gameFinished(true, false);
+			gameFinished(true, false, false);
 		} else {
 			currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
 		}
@@ -219,7 +226,7 @@ public class GameController {
 		} else if (selectedAnswer != null) {
 			selectedAnswer.setState(AnswerState.WRONG);
 			correctAnswer.setState(AnswerState.RIGHT);
-			gameFinished(false, false);
+			gameFinished(false, false, false);
 		}
 	}
 
@@ -231,7 +238,7 @@ public class GameController {
 		case QUESTION_ONGOING:
 			remainingTime--;
 			if (remainingTime <= 0) {
-				gameFinished(false, true);
+				gameFinished(false, true, false);
 			}
 			break;
 		default:
@@ -251,6 +258,7 @@ public class GameController {
 	private int remainingTime = DEFAULT_REMAINING_TIME;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
+
 	/** the {@link GameState}. */
 	private GameState state = GameState.DETERMINE_NEXT_QUESTION;
 }

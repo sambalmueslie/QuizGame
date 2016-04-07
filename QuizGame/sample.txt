@@ -78,6 +78,7 @@
   ],
   "lifeLineTypes": [
     "AUDIENCE",
+    "AUDIENCE",
     "FIFITY_FIFTY"
   ],
   "questions": [

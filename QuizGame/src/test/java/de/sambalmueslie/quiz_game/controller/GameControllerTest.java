@@ -62,20 +62,20 @@ public class GameControllerTest {
 	public void testClock() {
 		int time = controller.getRemainingTime();
 		// DETERMINE_NEXT_QUESTION
-		assertEquals(0, time);
+		assertEquals(30, time);
 		controller.handleUserInteraction();
 		// GameState.PREPARE_QUESTION;
 		time = controller.getRemainingTime();
-		assertEquals(60, time);
+		assertEquals(30, time);
 		controller.handleUserInteraction();
 		// GameState.QUESTION_ONGOING;
 		time = controller.getRemainingTime();
-		assertEquals(60, time);
+		assertEquals(30, time);
 		controller.handleGameLoop();
 		time = controller.getRemainingTime();
-		assertEquals(59, time);
+		assertEquals(29, time);
 
-		for (int i = 60; i > 0; i--) {
+		for (int i = 30; i > 0; i--) {
 			controller.handleGameLoop();
 		}
 

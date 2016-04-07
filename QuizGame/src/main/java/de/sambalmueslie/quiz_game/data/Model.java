@@ -6,29 +6,38 @@ import java.util.stream.Stream;
 
 public class Model {
 	public void add(final Index index) {
-		if (index == null) return;
+		if (index == null) {
+			return;
+		}
 		indexs.add(index);
 		indexs.sort((o1, o2) -> Integer.compare(o2.getNumber(), o1.getNumber()));
 	}
 
 	public void add(final LifeLine lifeLine) {
-		if (lifeLine == null) return;
+		if (lifeLine == null) {
+			return;
+		}
 		lifeLines.add(lifeLine);
 	}
 
 	public void add(final Question question) {
-		if (question == null) return;
+		if (question == null) {
+			return;
+		}
 		questions.add(question);
 	}
 
 	public Index getIndexByLevel(final int currentQuestionLevel) {
-		if (indexs.isEmpty()) return null;
-		if (currentQuestionLevel <= 0)
+		if (indexs.isEmpty()) {
+			return null;
+		}
+		if (currentQuestionLevel <= 0) {
 			return indexs.get(indexs.size() - 1);
-		else if (currentQuestionLevel >= indexs.size())
+		} else if (currentQuestionLevel >= indexs.size()) {
 			return indexs.get(0);
-		else
+		} else {
 			return indexs.get(indexs.size() - currentQuestionLevel);
+		}
 	}
 
 	public List<Index> getIndexs() {
@@ -40,7 +49,9 @@ public class Model {
 	}
 
 	public Question getQuestionByLevel(final int level) {
-		if (questions.isEmpty()) return null;
+		if (questions.isEmpty()) {
+			return null;
+		}
 		final Stream<Question> stream = questions.stream();
 		final List<Question> result = stream.filter(q -> q.getLevel() <= level).filter(q -> !q.isAnswered()).collect(Collectors.toList());
 		final Random r = new Random();
@@ -48,7 +59,9 @@ public class Model {
 			final int index = r.nextInt(questions.size() - 1);
 			return questions.get(index);
 		}
-		if (result.size() == 1) return result.get(0);
+		if (result.size() == 1) {
+			return result.get(0);
+		}
 		final int index = r.nextInt(result.size() - 1);
 		return result.get(index);
 	}

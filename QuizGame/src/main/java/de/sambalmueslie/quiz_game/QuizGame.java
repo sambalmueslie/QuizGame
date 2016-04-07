@@ -8,9 +8,13 @@ import de.sambalmueslie.quiz_game.controller.GameController;
 import de.sambalmueslie.quiz_game.data.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class QuizGame extends Application {
 
@@ -29,26 +33,37 @@ public class QuizGame extends Application {
 
 	@Override
 	public void start(final Stage stage) throws Exception {
-		this.stage = stage;
 		gameController = new GameController();
-		gameController.setListener((won, timeout, prize) -> handleGameStateChanged(won, timeout, prize));
+		gameController.setListener((won, timeout, exit, prize) -> handleGameStateChanged(won, timeout, exit, prize));
+
+		pane = new BorderPane();
+		scene = new Scene(pane);
+		scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
+
 		showStartWindow();
+
+		final Screen primaryScreen = Screen.getPrimary();
+		final Rectangle2D bounds = primaryScreen.getBounds();
+		stage.setX(bounds.getMinX());
+		stage.setY(bounds.getMinY());
+		stage.setWidth(bounds.getWidth());
+		stage.setHeight(bounds.getHeight());
+		stage.initStyle(StageStyle.UNDECORATED);
+		stage.setScene(scene);
+
+		stage.show();
 	}
 
-	private void handleGameStateChanged(final boolean won, final boolean timeout, final int prize) {
+	private void handleGameStateChanged(final boolean won, final boolean timeout, final boolean exit, final int prize) {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("FinishedWindow.fxml"));
 			final Parent root = fxmlLoader.load();
 			final FinishedWindowController controller = (FinishedWindowController) fxmlLoader.getController();
-			controller.setup(won, timeout, prize);
+			controller.setup(won, timeout, exit, prize);
 
-			final Scene scene = new Scene(root, 1024, 768);
-			scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
 			scene.setOnKeyTyped(e -> showStartWindow());
 
-			stage.setTitle("Quiz Game - Finished");
-			stage.setScene(scene);
-			stage.show();
+			pane.setCenter(root);
 		} catch (final Exception e) {
 			logger.fatal("Exception occured", e);
 		}
@@ -59,21 +74,17 @@ public class QuizGame extends Application {
 	 */
 	private void showMainWindow() {
 		try {
-			final Model model = ConfigFileReader.readConfigFile("config.txt");
+			final Model model = ConfigFileReader.readConfigFile("sample.txt");
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
 			final Parent root = fxmlLoader.load();
 			final MainWindowController controller = (MainWindowController) fxmlLoader.getController();
 			controller.setGameController(gameController);
 			controller.setModel(model);
 
-			final Scene scene = new Scene(root, 1024, 768);
-			scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
 			scene.setOnKeyTyped(e -> controller.handleKeyTyped(e));
 			gameController.handleUserInteraction();
 
-			stage.setTitle("Quiz Game - Game");
-			stage.setScene(scene);
-			stage.show();
+			pane.setCenter(root);
 		} catch (final Exception e) {
 			logger.fatal("Exception occured", e);
 		}
@@ -86,13 +97,8 @@ public class QuizGame extends Application {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("StartWindow.fxml"));
 			final Parent root = fxmlLoader.load();
-			final Scene scene = new Scene(root, 1024, 768);
-			scene.getStylesheets().addAll(getClass().getClassLoader().getResource("style.css").toExternalForm());
 			scene.setOnKeyTyped(e -> showMainWindow());
-
-			stage.setTitle("Quiz Game - Welcome");
-			stage.setScene(scene);
-			stage.show();
+			pane.setCenter(root);
 		} catch (final Exception e) {
 			logger.fatal("Exception occured", e);
 		}
@@ -100,6 +106,6 @@ public class QuizGame extends Application {
 
 	/** the {@link GameController}. */
 	private GameController gameController;
-	/** the {@link Stage}. */
-	private Stage stage;
+	private BorderPane pane;
+	private Scene scene;
 }

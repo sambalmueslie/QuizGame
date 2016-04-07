@@ -7,7 +7,7 @@ import java.util.List;
 import de.sambalmueslie.quiz_game.data.*;
 
 public class GameController {
-	private static final int DEFAULT_REMAINING_TIME = 60;
+	private static final int DEFAULT_REMAINING_TIME = 30;
 
 	public Answer getAnswer(final int index) {
 		if (currentQuestion == null) return null;
@@ -46,6 +46,10 @@ public class GameController {
 		selectedAnswer.setState(AnswerState.SELECTED);
 		currentQuestion.setAnswered(true);
 		setState(GameState.ANSWER_GIVEN);
+	}
+
+	public void handleExitGame() {
+		gameFinished(false, false, true);
 	}
 
 	public void handleGameLoop() {
@@ -148,14 +152,17 @@ public class GameController {
 		return state;
 	}
 
-	private void gameFinished(final boolean won, final boolean timeout) {
+	private void gameFinished(final boolean won, final boolean timeout, final boolean exit) {
 		setState(GameState.FINISHED);
 		if (listener == null) return;
 
 		int prize = 0;
 		if (won) {
 			final List<Index> indexs = model.getIndexs();
-			prize = indexs.get(indexs.size() - 1).getMoney();
+			prize = indexs.get(0).getMoney();
+		} else if (exit) {
+			final Index index = model.getIndexByLevel(currentQuestionLevel);
+			prize = index.getMoney();
 		} else {
 			for (int i = 0; i < currentQuestionLevel; i++) {
 				final Index index = model.getIndexByLevel(i);
@@ -164,7 +171,7 @@ public class GameController {
 				}
 			}
 		}
-		listener.gameFinished(won, timeout, prize);
+		listener.gameFinished(won, timeout, exit, prize);
 		selectedAnswer = null;
 		currentQuestion = null;
 		currentQuestionLevel = 1;
@@ -173,9 +180,11 @@ public class GameController {
 
 	private void getNewQuestion() {
 		selectedAnswer = null;
+		final List<Index> indexs = model.getIndexs();
+		final boolean finished = indexs.get(0).getNumber() <= currentQuestionLevel;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
-		if (currentQuestion == null) {
-			gameFinished(true, false);
+		if (currentQuestion == null || finished) {
+			gameFinished(true, false, false);
 		} else {
 			currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
 		}
@@ -217,7 +226,7 @@ public class GameController {
 		} else if (selectedAnswer != null) {
 			selectedAnswer.setState(AnswerState.WRONG);
 			correctAnswer.setState(AnswerState.RIGHT);
-			gameFinished(false, false);
+			gameFinished(false, false, false);
 		}
 	}
 
@@ -229,7 +238,7 @@ public class GameController {
 		case QUESTION_ONGOING:
 			remainingTime--;
 			if (remainingTime <= 0) {
-				gameFinished(false, true);
+				gameFinished(false, true, false);
 			}
 			break;
 		default:
@@ -246,7 +255,7 @@ public class GameController {
 	/** the {@link Model}. */
 	private Model model;
 	/** the remaining time. */
-	private int remainingTime;
+	private int remainingTime = DEFAULT_REMAINING_TIME;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
 

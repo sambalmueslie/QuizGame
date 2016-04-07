@@ -7,7 +7,7 @@ import java.util.List;
 import de.sambalmueslie.quiz_game.data.*;
 
 public class GameController {
-	private static final int DEFAULT_REMAINING_TIME = 60;
+	private static final int DEFAULT_REMAINING_TIME = 30;
 
 	public Answer getAnswer(final int index) {
 		if (currentQuestion == null) return null;
@@ -155,7 +155,7 @@ public class GameController {
 		int prize = 0;
 		if (won) {
 			final List<Index> indexs = model.getIndexs();
-			prize = indexs.get(indexs.size() - 1).getMoney();
+			prize = indexs.get(0).getMoney();
 		} else {
 			for (int i = 0; i < currentQuestionLevel; i++) {
 				final Index index = model.getIndexByLevel(i);
@@ -173,8 +173,10 @@ public class GameController {
 
 	private void getNewQuestion() {
 		selectedAnswer = null;
+		final List<Index> indexs = model.getIndexs();
+		final boolean finished = indexs.get(0).getNumber() <= currentQuestionLevel;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
-		if (currentQuestion == null) {
+		if (currentQuestion == null || finished) {
 			gameFinished(true, false);
 		} else {
 			currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
@@ -246,10 +248,9 @@ public class GameController {
 	/** the {@link Model}. */
 	private Model model;
 	/** the remaining time. */
-	private int remainingTime;
+	private int remainingTime = DEFAULT_REMAINING_TIME;
 	/** the selected {@link Answer}. */
 	private Answer selectedAnswer;
-
 	/** the {@link GameState}. */
 	private GameState state = GameState.DETERMINE_NEXT_QUESTION;
 }

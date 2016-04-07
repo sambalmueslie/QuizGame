@@ -82,31 +82,229 @@
   ],
   "questions": [
     {
-      "answerA": "a",
-      "answerB": "b",
-      "answerC": "c",
-      "answerD": "d",
-      "correct": 97,
-      "level": 1,
-      "text": "text"
+      "answerA": "Der König",
+      "answerB": "Haman",
+      "answerC": "Mordechai",
+      "answerD": "Esther",
+      "correct": 99,
+      "level": 12,
+      "text": "Wer hätte statt seines Erbauers an einem Galgen hängen sollen?"
     },
     {
-      "answerA": "a",
-      "answerB": "b",
-      "answerC": "c",
-      "answerD": "d",
+      "answerA": "Wein",
+      "answerB": "Wachteln",
+      "answerC": "Stockfisch",
+      "answerD": "Nutella",
+      "correct": 98,
+      "level": 13,
+      "text": "Was gab es als Beilage zum Manna?"
+    },
+    {
+      "answerA": "Gemausi",
+      "answerB": "Gemaliel",
+      "answerC": "Gedion",
+      "answerD": "Gehasi",
+      "correct": 100,
+      "level": 14,
+      "text": "Welcher Diener eignete sich ein Geschenk, dass ein Herr ablehnte an?"
+    },
+    {
+      "answerA": "Benjamin",
+      "answerB": "Manasse",
+      "answerC": "Ruben",
+      "answerD": "Josef",
       "correct": 97,
+      "level": 14,
+      "text": "Welcher israelitische Stamm erbeutete Frauen bei einem Fest um einen Schwur zu umgehen?"
+    },
+    {
+      "answerA": "500 Jahre",
+      "answerB": "100 Jahre",
+      "answerC": "1550 Jahre",
+      "answerD": "750 Jahre",
+      "correct": 99,
+      "level": 14,
+      "text": "Über welche Zeitspanne wurde die Bibel geschrieben?"
+    },
+    {
+      "answerA": "605 v. Chr",
+      "answerB": "606 v. Chr",
+      "answerC": "6010 v. Chr",
+      "answerD": "7001 v. Chr",
+      "correct": 97,
+      "level": 15,
+      "text": "Wann fand die Schlacht von Karkemisch statt?"
+    },
+    {
+      "answerA": "Noah",
+      "answerB": "Lukas",
+      "answerC": "Jona",
+      "answerD": "Abraham",
+      "correct": 99,
       "level": 2,
-      "text": "text"
+      "text": "Wer flüchtete vor Gott?"
     },
     {
-      "answerA": "a",
-      "answerB": "b",
-      "answerC": "c",
-      "answerD": "d",
+      "answerA": "Simon",
+      "answerB": "Petrus",
+      "answerC": "Thomas",
+      "answerD": "Judas",
+      "correct": 100,
+      "level": 2,
+      "text": "Welcher Jünger war zur Zeit des Passsamahls von Satan besessen?"
+    },
+    {
+      "answerA": "33",
+      "answerB": "39",
+      "answerC": "45",
+      "answerD": "40",
+      "correct": 98,
+      "level": 3,
+      "text": "Wie viele Bücher hat das alte Testament?"
+    },
+    {
+      "answerA": "Das meist zitierte Buch",
+      "answerB": "Ein philosophisches Buch",
+      "answerC": "ein Rezeptbuch",
+      "answerD": "ein Geschichtsbuch",
       "correct": 97,
       "level": 3,
-      "text": "text"
+      "text": "Was ist die Bibel in erster Linie?"
+    },
+    {
+      "answerA": "Horeb",
+      "answerB": "Karmel",
+      "answerC": "Zugspitze",
+      "answerD": "Ölberg",
+      "correct": 97,
+      "level": 4,
+      "text": "Auf welchem Berg bekam Mose die 10 Gebote?"
+    },
+    {
+      "answerA": "4 Tage",
+      "answerB": "3 Tage",
+      "answerC": "2  Wochen",
+      "answerD": "1 Tag",
+      "correct": 98,
+      "level": 4,
+      "text": "Wie lange war Saulus blind?"
+    },
+    {
+      "answerA": "Philadelphia",
+      "answerB": "Laodizea",
+      "answerC": "Korinth",
+      "answerD": "Smyrna",
+      "correct": 99,
+      "level": 6,
+      "text": "Welche Stadt gehört nicht zu dein in der Offenbarung erwähnten Gemeinden?"
+    },
+    {
+      "answerA": "Er gab ein Festmahl",
+      "answerB": "Er ging zu den Schafen",
+      "answerC": "Er schrie vor Freude",
+      "answerD": "Er versteckte sich",
+      "correct": 100,
+      "level": 6,
+      "text": "Was war die erste Reaktion von Saul auf die Königskrone?"
+    },
+    {
+      "answerA": "Adam, Set, Enosch",
+      "answerB": "Samuel, David, Tubal",
+      "answerC": "Sem, Ham, Jafet",
+      "answerD": "Put, Kanaan, Togarma",
+      "correct": 99,
+      "level": 6,
+      "text": "Wie hießen die Söhne von Noah?"
+    },
+    {
+      "answerA": "David",
+      "answerB": "Saul",
+      "answerC": "Salomo",
+      "answerD": "Rehabeam",
+      "correct": 97,
+      "level": 7,
+      "text": "Welcher König erhielt von seiner Frau eine Rüge für seinen ausgefallenen Lobpreisstil?"
+    },
+    {
+      "answerA": "Keine",
+      "answerB": "Primzahl",
+      "answerC": "Göttliche Zahl",
+      "answerD": "Menschliche Zahl",
+      "correct": 99,
+      "level": 8,
+      "text": "Welche symbolische Bedeutung hat die Zahl 7 in der Bibel?"
+    },
+    {
+      "answerA": "Deborah",
+      "answerB": "Gideon",
+      "answerC": "Jael",
+      "answerD": "Simson",
+      "correct": 99,
+      "level": 8,
+      "text": "Wer war kein Richter in Israel?"
+    },
+    {
+      "answerA": "14",
+      "answerB": "32",
+      "answerC": "27",
+      "answerD": "18",
+      "correct": 99,
+      "level": 9,
+      "text": "Wie viele Bücher hat das NT?"
+    },
+    {
+      "answerA": "Asser",
+      "answerB": "Dan",
+      "answerC": "Juda",
+      "answerD": "Naftali",
+      "correct": 98,
+      "level": 9,
+      "text": "In der Offenbarung werden die Stämme Israels aufgezählt, welcher wird nicht genannt?"
+    },
+    {
+      "answerA": "Wurde überfahren",
+      "answerB": "Seine Frau warf einen Mühlstein",
+      "answerC": "Hat die Bundeslade angefasst",
+      "answerD": "Selbstmord",
+      "correct": 99,
+      "level": 9,
+      "text": "Warum starb Usa?"
+    },
+    {
+      "answerA": "Schnellverfahren einführen",
+      "answerB": "Unternehmensberater einstellen",
+      "answerC": "40h Woche",
+      "answerD": "Arbeit verteilen",
+      "correct": 100,
+      "level": 11,
+      "text": "Welchen Tipp gab Jitro Mose um ihm die Arbeit zu erleichtern?"
+    },
+    {
+      "answerA": "Jakobus",
+      "answerB": "Paulus",
+      "answerC": "Johannes",
+      "answerD": "Maleachi",
+      "correct": 98,
+      "level": 11,
+      "text": "Wer sorgte in Ephesus für Unruhen?"
+    },
+    {
+      "answerA": "5 Brote und 2 Fische",
+      "answerB": "Liferando.de",
+      "answerC": "Manna",
+      "answerD": "5 Brote und 3 Fische",
+      "correct": 97,
+      "level": 1,
+      "text": "Wie machte Jesus 5000 Menschen satt?"
+    },
+    {
+      "answerA": "31176",
+      "answerB": "45289",
+      "answerC": "25001",
+      "answerD": "100",
+      "correct": 97,
+      "level": 10,
+      "text": "Wie viele Verse hat die Bibel?"
     }
   ]
 }

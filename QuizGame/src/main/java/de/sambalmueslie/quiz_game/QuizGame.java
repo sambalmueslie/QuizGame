@@ -59,7 +59,7 @@ public class QuizGame extends Application {
 	 */
 	private void showMainWindow() {
 		try {
-			final Model model = ConfigFileReader.readConfigFile("config.txt");
+			final Model model = ConfigFileReader.readConfigFile("sample.txt");
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("MainWindow.fxml"));
 			final Parent root = fxmlLoader.load();
 			final MainWindowController controller = (MainWindowController) fxmlLoader.getController();

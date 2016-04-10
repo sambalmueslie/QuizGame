@@ -49,7 +49,7 @@ public class QuizGame extends Application {
 		stage.setY(bounds.getMinY());
 		stage.setWidth(bounds.getWidth());
 		stage.setHeight(bounds.getHeight());
-		stage.initStyle(StageStyle.DECORATED);
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setScene(scene);
 
 		stage.show();

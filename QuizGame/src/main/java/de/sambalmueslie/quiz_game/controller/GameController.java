@@ -4,10 +4,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.sambalmueslie.quiz_game.data.*;
 
 public class GameController {
-	private static final int DEFAULT_REMAINING_TIME = 30;
+	private static final int DEFAULT_REMAINING_TIME = 60;
+	private static Logger logger = LogManager.getLogger(GameController.class);
 
 	public Answer getAnswer(final int index) {
 		if (currentQuestion == null) return null;
@@ -17,7 +21,6 @@ public class GameController {
 	}
 
 	public Index getCurrentIndex() {
-		if (currentQuestion == null) return null;
 		return model.getIndexByLevel(currentQuestionLevel);
 	}
 
@@ -30,7 +33,8 @@ public class GameController {
 	}
 
 	public void handleAnswer(final int index) {
-		if (getState() != GameState.QUESTION_ONGOING && getState() != GameState.ANSWER_GIVEN) return;
+		if (getState() != GameState.QUESTION_ONGOING && getState() != GameState.ANSWER_GIVEN && getState() != GameState.LIFELINE_AUDIENCE) return;
+		logger.info("Handle answer " + index);
 
 		final List<Answer> answers = currentQuestion.getAnswers();
 
@@ -50,6 +54,7 @@ public class GameController {
 
 	public void handleExitGame() {
 		gameFinished(false, false, true);
+		setState(GameState.FINISHED);
 	}
 
 	public void handleGameLoop() {
@@ -61,7 +66,16 @@ public class GameController {
 		case DETERMINE_NEXT_QUESTION:
 			getNewQuestion();
 			resetClock();
-			setState(GameState.PREPARE_QUESTION);
+
+			final List<Index> indexs = model.getIndexs();
+			final boolean finished = indexs.get(0).getNumber() <= currentQuestionLevel - 1;
+			if (currentQuestion == null || finished) {
+				gameFinished(true, false, false);
+				setState(GameState.FINISHED);
+				handleUserInteraction();
+			} else {
+				setState(GameState.PREPARE_QUESTION);
+			}
 			break;
 		case PREPARE_QUESTION:
 			makeAnswersVisible();
@@ -72,9 +86,28 @@ public class GameController {
 			setState(GameState.SHOW_ANSWER_RESULT);
 			break;
 		case SHOW_ANSWER_RESULT:
-			currentQuestion = null;
+			if (selectedAnswer != null && selectedAnswer.getState() == AnswerState.WRONG) {
+				setState(GameState.FINISHED);
+			} else {
+				currentQuestion = null;
+				selectedAnswer = null;
+				setState(GameState.DETERMINE_NEXT_QUESTION);
+			}
+			handleUserInteraction();
+			break;
+		case FINISHED:
+			if (listener != null) {
+				listener.gameFinished(gameFinishedReason, prize);
+			}
+
 			selectedAnswer = null;
+			currentQuestion = null;
+			currentQuestionLevel = 1;
+			remainingTime = DEFAULT_REMAINING_TIME;
+			gameFinishedReason = null;
+			prize = 0;
 			setState(GameState.DETERMINE_NEXT_QUESTION);
+			break;
 		default:
 			break;
 		}
@@ -82,11 +115,11 @@ public class GameController {
 
 	public void requestLifeLineUsage(final LifeLine lifeLine) {
 		if (!lifeLine.isAvailable()) return;
-		if (getState() != GameState.QUESTION_ONGOING) return;
+		if (getState() != GameState.QUESTION_ONGOING && getState() != GameState.ANSWER_GIVEN && getState() != GameState.LIFELINE_AUDIENCE) return;
 
 		switch (lifeLine.getType()) {
 		case AUDIENCE:
-			// TODO show ask the audience!
+			setState(GameState.LIFELINE_AUDIENCE);
 			break;
 		case FIFITY_FIFTY:
 			final List<Answer> answers = new LinkedList<>(currentQuestion.getAnswers());
@@ -94,7 +127,12 @@ public class GameController {
 			answers.remove(currentQuestion.getCorrectAnswer());
 
 			for (int i = 0; i < 2; i++) {
-				answers.get(i).setVisible(false);
+				final Answer answer = answers.get(i);
+				if (answer == selectedAnswer) {
+					selectedAnswer = null;
+					answer.setState(AnswerState.IDLE);
+				}
+				answer.setVisible(false);
 			}
 
 			break;
@@ -153,16 +191,15 @@ public class GameController {
 	}
 
 	private void gameFinished(final boolean won, final boolean timeout, final boolean exit) {
-		setState(GameState.FINISHED);
-		if (listener == null) return;
-
-		int prize = 0;
+		prize = 0;
 		if (won) {
 			final List<Index> indexs = model.getIndexs();
 			prize = indexs.get(0).getMoney();
+			gameFinishedReason = GameFinishedReason.WON;
 		} else if (exit) {
 			final Index index = model.getIndexByLevel(currentQuestionLevel);
 			prize = index.getMoney();
+			gameFinishedReason = GameFinishedReason.EXIT;
 		} else {
 			for (int i = 0; i < currentQuestionLevel; i++) {
 				final Index index = model.getIndexByLevel(i);
@@ -170,24 +207,20 @@ public class GameController {
 					prize = index.getMoney();
 				}
 			}
+			if (timeout) {
+				gameFinishedReason = GameFinishedReason.TIMEOUT;
+			} else {
+				gameFinishedReason = GameFinishedReason.WRONG_ANSWER;
+			}
 		}
-		listener.gameFinished(won, timeout, exit, prize);
-		selectedAnswer = null;
-		currentQuestion = null;
-		currentQuestionLevel = 1;
-		remainingTime = DEFAULT_REMAINING_TIME;
+
 	}
 
 	private void getNewQuestion() {
 		selectedAnswer = null;
-		final List<Index> indexs = model.getIndexs();
-		final boolean finished = indexs.get(0).getNumber() <= currentQuestionLevel;
 		currentQuestion = model.getQuestionByLevel(currentQuestionLevel);
-		if (currentQuestion == null || finished) {
-			gameFinished(true, false, false);
-		} else {
-			currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
-		}
+		if (currentQuestion == null) return;
+		currentQuestion.getAnswers().forEach(a -> resetAnswer(a));
 	}
 
 	private boolean isAnswerCorrect() {
@@ -214,6 +247,7 @@ public class GameController {
 	}
 
 	private void setState(final GameState state) {
+		logger.info("Switch game state from " + this.state + " to " + state);
 		this.state = state;
 	}
 
@@ -239,6 +273,8 @@ public class GameController {
 			remainingTime--;
 			if (remainingTime <= 0) {
 				gameFinished(false, true, false);
+				setState(GameState.FINISHED);
+				handleUserInteraction();
 			}
 			break;
 		default:
@@ -248,12 +284,17 @@ public class GameController {
 
 	/** the current {@link Question}. */
 	private Question currentQuestion;
+
 	/** the current question level. */
 	private int currentQuestionLevel = 1;
+
+	/** the {@link GameFinishedReason}. */
+	private GameFinishedReason gameFinishedReason;
 	/** the {@link GameControllerListener}. */
 	private GameControllerListener listener;
 	/** the {@link Model}. */
 	private Model model;
+	private int prize;
 	/** the remaining time. */
 	private int remainingTime = DEFAULT_REMAINING_TIME;
 	/** the selected {@link Answer}. */

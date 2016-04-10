@@ -1,5 +1,6 @@
 package de.sambalmueslie.quiz_game;
 
+import de.sambalmueslie.quiz_game.controller.GameFinishedReason;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -7,21 +8,26 @@ public class FinishedWindowController {
 	/**
 	 * Setup.
 	 *
-	 * @param won
-	 *            is won
-	 * @param timeout
-	 *            is timeout
-	 * @param exit
+	 * @param reason
+	 *            the {@link GameFinishedReason}
 	 * @param prize
 	 *            the prize
 	 */
-	public void setup(final boolean won, final boolean timeout, final boolean exit, final int prize) {
-		if (won || exit) {
+	public void setup(final GameFinishedReason reason, final int prize) {
+		if (reason == null) return;
+		switch (reason) {
+		case WON:
+		case EXIT:
 			result.setText("Herzlichen Glückwunsch");
-		} else if (timeout) {
+			break;
+		case TIMEOUT:
 			result.setText("Leider zu langsam");
-		} else {
+			break;
+		case WRONG_ANSWER:
 			result.setText("Leider falsche Antwort");
+			break;
+		default:
+			break;
 		}
 		win.setText("Ihr Gewinn beträgt: " + prize + " €");
 	}

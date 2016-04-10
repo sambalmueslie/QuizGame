@@ -22,7 +22,7 @@
             </FlowPane>
             <TilePane alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="224.0">
                <children>
-                  <Label fx:id="clock" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="140.0" styleClass="lbl_clock" text="30" />
+                  <Label fx:id="clock" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="140.0" styleClass="lbl_clock" text="60" />
                </children>
             </TilePane>
             <BorderPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0">

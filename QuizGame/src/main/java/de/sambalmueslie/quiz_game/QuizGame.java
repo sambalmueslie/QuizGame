@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.sambalmueslie.quiz_game.config.ConfigFileReader;
 import de.sambalmueslie.quiz_game.controller.GameController;
+import de.sambalmueslie.quiz_game.controller.GameFinishedReason;
 import de.sambalmueslie.quiz_game.data.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,7 @@ public class QuizGame extends Application {
 	@Override
 	public void start(final Stage stage) throws Exception {
 		gameController = new GameController();
-		gameController.setListener((won, timeout, exit, prize) -> handleGameStateChanged(won, timeout, exit, prize));
+		gameController.setListener((reason, prize) -> handleGameStateChanged(reason, prize));
 
 		pane = new BorderPane();
 		scene = new Scene(pane);
@@ -48,18 +49,18 @@ public class QuizGame extends Application {
 		stage.setY(bounds.getMinY());
 		stage.setWidth(bounds.getWidth());
 		stage.setHeight(bounds.getHeight());
-		stage.initStyle(StageStyle.UNDECORATED);
+		stage.initStyle(StageStyle.DECORATED);
 		stage.setScene(scene);
 
 		stage.show();
 	}
 
-	private void handleGameStateChanged(final boolean won, final boolean timeout, final boolean exit, final int prize) {
+	private void handleGameStateChanged(final GameFinishedReason reason, final int prize) {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("FinishedWindow.fxml"));
 			final Parent root = fxmlLoader.load();
 			final FinishedWindowController controller = (FinishedWindowController) fxmlLoader.getController();
-			controller.setup(won, timeout, exit, prize);
+			controller.setup(reason, prize);
 
 			scene.setOnKeyTyped(e -> showStartWindow());
 
